@@ -24,6 +24,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import com.github.lgooddatepicker.components.DatePicker;
 
 public class Formulario extends JFrame {
 
@@ -35,7 +36,6 @@ public class Formulario extends JFrame {
 	private JTextField txtFieldPhone;
 	private DefaultComboBoxModel<String> dcmCity;
 	private DefaultComboBoxModel<Integer> dcmAge;
-	private JComboBox<Integer> comboBoxAge;
 	private JComboBox comboBoxCity;
 	private JRadioButton rdbtnWomen;
 	private JRadioButton rdbtnMen;
@@ -44,6 +44,11 @@ public class Formulario extends JFrame {
 	private JButton buttonNext;
 	private JButton buttonNew;
 	private JPanel panelDatos;
+	private JMenuItem mntmSave;
+	private JMenuItem mntmOpen;
+	private DatePicker datePicker;
+	private JMenu mnVer;
+	private JMenuItem mntmTabla;
 
 	/**
 	 * Create the frame.
@@ -59,7 +64,7 @@ public class Formulario extends JFrame {
 		dcmCity = new DefaultComboBoxModel<String>(vCity);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 416);
+		setBounds(100, 100, 575, 416);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -67,11 +72,10 @@ public class Formulario extends JFrame {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen = new JMenuItem("Open");
 		mnFile.add(mntmOpen);
 		
-		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.setEnabled(false);
+		mntmSave = new JMenuItem("Save");
 		mnFile.add(mntmSave);
 		
 		JSeparator separator = new JSeparator();
@@ -79,6 +83,12 @@ public class Formulario extends JFrame {
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
+		
+		mnVer = new JMenu("Ver");
+		menuBar.add(mnVer);
+		
+		mntmTabla = new JMenuItem("Tabla");
+		mnVer.add(mntmTabla);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -128,7 +138,7 @@ public class Formulario extends JFrame {
 		buttonAdd = new JButton("Add");
 		buttonAdd.setEnabled(false);
 		panel_2.add(buttonAdd);
-		panelDatos.setLayout(new MigLayout("", " [71.00][grow][][]", "[][31.00][31.00][31.00][29.00][23.00][24.00]"));
+		panelDatos.setLayout(new MigLayout("", "[71.00][108.00][][132.00]", "[][31.00][31.00][31.00][29.00][23.00][24.00]"));
 		
 		JLabel lblName = new JLabel("Name");
 		panelDatos.add(lblName, "cell 0 1,alignx trailing");
@@ -171,14 +181,13 @@ public class Formulario extends JFrame {
 		panelDatos.add(txtFieldDNI, "cell 1 5,growx");
 		txtFieldDNI.setColumns(10);
 		
-		JLabel lblYears = new JLabel("Age");
+		JLabel lblYears = new JLabel("Birthday");
 		panelDatos.add(lblYears, "cell 2 5,alignx trailing");
-		
-		comboBoxAge = new JComboBox<Integer>();
-		comboBoxAge.setEnabled(false);
 		dcmAge = new DefaultComboBoxModel<Integer>();
-		comboBoxAge.setModel(dcmAge);
-		panelDatos.add(comboBoxAge, "cell 3 5,growx");
+		
+		datePicker = new DatePicker();
+		datePicker.getComponentDateTextField().setEditable(false);
+		panelDatos.add(datePicker, "cell 3 5,alignx left,aligny center");
 		
 		JLabel lblPhone = new JLabel("Phone");
 		panelDatos.add(lblPhone, "cell 0 6,alignx trailing");
@@ -242,10 +251,6 @@ public class Formulario extends JFrame {
 
 	public void setDcmAge(DefaultComboBoxModel<Integer> dcmAge) {
 		this.dcmAge = dcmAge;
-	}
-
-	public void setComboBoxAge(JComboBox<Integer> comboBoxAge) {
-		this.comboBoxAge = comboBoxAge;
 	}
 
 	public void setComboBoxCity(JComboBox comboBoxCity) {
@@ -320,10 +325,6 @@ public class Formulario extends JFrame {
 		return dcmAge;
 	}
 
-	public JComboBox<Integer> getComboBoxAge() {
-		return comboBoxAge;
-	}
-
 	public JComboBox getComboBoxCity() {
 		return comboBoxCity;
 	}
@@ -338,6 +339,22 @@ public class Formulario extends JFrame {
 
 	public JPanel getPanelDatos() {
 		return panelDatos;
+	}
+
+	public JMenuItem getMntmSave() {
+		return mntmSave;
+	}
+
+	public JMenuItem getMntmOpen() {
+		return mntmOpen;
+	}
+
+	public DatePicker getDatePicker() {
+		return datePicker;
+	}
+
+	public JMenuItem getMntmTabla() {
+		return mntmTabla;
 	}
 	
 	

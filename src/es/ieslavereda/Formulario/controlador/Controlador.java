@@ -3,14 +3,24 @@ package es.ieslavereda.Formulario.controlador;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.ieslavereda.Formulario.modelo.Persona;
 import es.ieslavereda.Formulario.modelo.Persona.Sexo;
 import es.ieslavereda.Formulario.vistas.Formulario;
+import es.ieslavereda.Formulario.vistas.Tabla;
 
 public class Controlador implements ActionListener {
 
@@ -36,12 +46,18 @@ public class Controlador implements ActionListener {
 		vista.getButtonNext().addActionListener(this);
 		vista.getButtonNew().addActionListener(this);
 		vista.getButtonAdd().addActionListener(this);
+		vista.getMntmOpen().addActionListener(this);
+		vista.getMntmSave().addActionListener(this);
+		vista.getMntmTabla().addActionListener(this);
 
 		// Add ActionCommand
 		vista.getButtonPrevious().setActionCommand("Previous");
 		vista.getButtonNext().setActionCommand("Next");
 		vista.getButtonNew().setActionCommand("New");
 		vista.getButtonAdd().setActionCommand("Add");
+		vista.getMntmOpen().setActionCommand("Open");
+		vista.getMntmSave().setActionCommand("Save");
+		vista.getMntmTabla().setActionCommand("Tabla");
 
 	}
 
@@ -62,8 +78,85 @@ public class Controlador implements ActionListener {
 			next();
 		} else if (comando.equals("Previous")) {			
 			previous();
+		} else if (comando.equals("Save")) {
+			save();
+		} else if (comando.equals("Open")) {
+			open();
+		} else if (comando.equals("Tabla")) {
+			tabla();
 		}
+		
 
+	}
+
+	private void tabla() {
+		
+		Tabla t = new Tabla();
+		t.setVisible(true);
+		
+	}
+
+	private void open() {
+		
+		JFileChooser jfc = new JFileChooser();
+		jfc.setFileFilter(new FileNameExtensionFilter("Formulario file", "app", "miapp"));
+		
+		int opcion = jfc.showOpenDialog(vista);
+		
+		if(opcion == JFileChooser.APPROVE_OPTION) {
+			
+			try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(jfc.getSelectedFile()))){
+				
+				personas = (ArrayList<Persona>)ois.readObject();
+				
+				index=0;
+				
+				actualizarFormulario();
+				
+				if(index<personas.size()-1)
+					vista.getButtonNext().setEnabled(true);
+				
+				if(index>0)
+					vista.getButtonPrevious().setEnabled(true);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+	}
+
+	private void save() {
+		
+		JFileChooser jfc = new JFileChooser();
+		jfc.setFileFilter(new FileNameExtensionFilter("Formulario file", "app", "miapp"));
+		
+		int opcion = jfc.showSaveDialog(vista);
+		
+		if(opcion==JFileChooser.APPROVE_OPTION) {
+			
+			try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(jfc.getSelectedFile()))){
+				
+				oos.writeObject(personas);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}		
+		
 	}
 
 	private void next() {
@@ -116,9 +209,9 @@ public class Controlador implements ActionListener {
 		vista.getTxtFieldDNI().setText(p.getDNI());
 		vista.getTxtFieldPhone().setText(p.getPhone());
 		vista.getComboBoxCity().setSelectedItem(p.getCity());
-		vista.getComboBoxAge().setSelectedIndex(p.getAge()-1);
 		vista.getRdbtnMen().setSelected(p.getSexo().equals(Sexo.HOMBRE));
 		vista.getRdbtnWomen().setSelected(p.getSexo().equals(Sexo.MUJER));
+		vista.getDatePicker().setDate(p.getBirthday());
 	}
 
 	private void crearPersona() {
@@ -131,14 +224,14 @@ public class Controlador implements ActionListener {
 		String DNI = vista.getTxtFieldDNI().getText();
 		String phone = vista.getTxtFieldPhone().getText();
 		String city = vista.getComboBoxCity().getSelectedItem().toString();
-		int age = vista.getComboBoxAge().getSelectedIndex() + 1;
+		LocalDate birthday = vista.getDatePicker().getDate();
 		Sexo sexo;
 		if (vista.getRdbtnMen().isSelected())
 			sexo = Sexo.HOMBRE;
 		else
 			sexo = Sexo.MUJER;
 
-		p = new Persona(name, surname, address, DNI, phone, city, age, sexo);
+		p = new Persona(name, surname, address, DNI, phone, city, birthday, sexo);
 
 		personas.add(p);
 	}

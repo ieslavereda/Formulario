@@ -1,6 +1,9 @@
 package es.ieslavereda.Formulario.modelo;
 
-public class Persona {
+import java.io.Serializable;
+import java.time.LocalDate;
+
+public class Persona implements Serializable {
 	
 	private String name;
 	private String surname;
@@ -8,14 +11,14 @@ public class Persona {
 	private String DNI;
 	private String phone;
 	private String city;
-	private int age;
+	private LocalDate birthday;
 	private Sexo sexo;
 	
 	public static enum Sexo {
 		HOMBRE, MUJER
 	}
 
-	public Persona(String name, String surname, String address, String dNI, String phone, String city, int age,
+	public Persona(String name, String surname, String address, String dNI, String phone, String city, LocalDate birthday,
 			Sexo sexo) {
 		super();
 		this.name = name;
@@ -24,7 +27,7 @@ public class Persona {
 		DNI = dNI;
 		this.phone = phone;
 		this.city = city;
-		this.age = age;
+		this.birthday = birthday;
 		this.sexo = sexo;
 	}
 
@@ -76,12 +79,14 @@ public class Persona {
 		this.city = city;
 	}
 
-	public int getAge() {
-		return age;
+
+
+	public LocalDate getBirthday() {
+		return birthday;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
 	}
 
 	public Sexo getSexo() {
@@ -95,7 +100,7 @@ public class Persona {
 	@Override
 	public String toString() {
 		return "Persona [name=" + name + ", surname=" + surname + ", address=" + address + ", DNI=" + DNI + ", phone="
-				+ phone + ", city=" + city + ", age=" + age + ", sexo=" + sexo + "]";
+				+ phone + ", city=" + city + ", birthday=" + birthday + ", sexo=" + sexo + "]";
 	}
 	
 
