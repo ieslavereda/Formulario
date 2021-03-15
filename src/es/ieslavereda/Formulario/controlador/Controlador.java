@@ -1,7 +1,6 @@
 package es.ieslavereda.Formulario.controlador;
 
 import java.awt.Component;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -57,24 +56,32 @@ public class Controlador implements ActionListener {
 
 		if (comando.equals("New")) {
 			newPerson();
-		} else if (comando.equals("Add")) {
-			crearPersona();
-			fieldsEnabled(false);
-			vista.getButtonAdd().setEnabled(false);
-			vista.getButtonNew().setEnabled(true);
-			
-			actualizarFormulario();
-
+		} else if (comando.equals("Add")) {			
+			add();
 		}
 
 	}
 
+	private void add() {
+		crearPersona();
+		fieldsEnabled(false);
+					
+		actualizarFormulario();		
+	}
+
 	private void actualizarFormulario() {
 		
-		Persona p = personas.get(index);
+		Persona p = personas.get(index);	
 		
-		
-		
+		vista.getTxtFieldName().setText(p.getName());
+		vista.getTxtFieldSurname().setText(p.getSurname());
+		vista.getTxtFieldAddress().setText(p.getAddress());
+		vista.getTxtFieldDNI().setText(p.getDNI());
+		vista.getTxtFieldPhone().setText(p.getPhone());
+		vista.getComboBoxCity().setSelectedItem(p.getCity());
+		vista.getComboBoxAge().setSelectedIndex(p.getAge()-1);
+		vista.getRdbtnMen().setSelected(p.getSexo().equals(Sexo.HOMBRE));
+		vista.getRdbtnWomen().setSelected(p.getSexo().equals(Sexo.MUJER));
 	}
 
 	private void crearPersona() {
@@ -102,13 +109,8 @@ public class Controlador implements ActionListener {
 	private void newPerson() {
 
 		fieldsEnabled(true);
+		
 		vista.getRdbtnMen().setSelected(true);
-
-//		vista.getTxtFieldName().setEnabled(true);
-//		vista.getTxtFieldSurname().setEnabled(true);
-//		vista.getTxtFieldAddress().setEnabled(true);
-//		vista.getTxtFieldDNI().setEnabled(true);
-//		vista.getTxtFieldPhone().setEnabled(true);
 
 	}
 
