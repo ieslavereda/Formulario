@@ -58,15 +58,52 @@ public class Controlador implements ActionListener {
 			newPerson();
 		} else if (comando.equals("Add")) {			
 			add();
+		} else if (comando.equals("Next")) {			
+			next();
+		} else if (comando.equals("Previous")) {			
+			previous();
 		}
 
 	}
 
+	private void next() {
+		
+		vista.getButtonPrevious().setEnabled(true);
+		
+		index++;
+		
+		if(index==personas.size()-1)
+			vista.getButtonNext().setEnabled(false);
+		
+		actualizarFormulario();
+	}
+	private void previous() {
+		
+		vista.getButtonNext().setEnabled(true);
+		
+		index--;
+		
+		if(index==0)
+			vista.getButtonPrevious().setEnabled(false);
+		
+				
+		actualizarFormulario();
+			
+	}
+
 	private void add() {
+		
 		crearPersona();
-		fieldsEnabled(false);
-					
-		actualizarFormulario();		
+		fieldsEnabled(false);					
+		actualizarFormulario();
+		
+		if(index<personas.size()-1)
+			vista.getButtonNext().setEnabled(true);
+		
+		if(index>0)
+			vista.getButtonPrevious().setEnabled(true);
+		
+		
 	}
 
 	private void actualizarFormulario() {
@@ -130,6 +167,9 @@ public class Controlador implements ActionListener {
 
 		vista.getButtonAdd().setEnabled(b);
 		vista.getButtonNew().setEnabled(!b);
+		
+		vista.getButtonNext().setEnabled(false);
+		vista.getButtonPrevious().setEnabled(false);
 
 	}
 
