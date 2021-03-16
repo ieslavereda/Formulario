@@ -15,17 +15,19 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.ieslavereda.Formulario.modelo.Persona;
 import es.ieslavereda.Formulario.modelo.Persona.Sexo;
 import es.ieslavereda.Formulario.vistas.Formulario;
-import es.ieslavereda.Formulario.vistas.Tabla;
+import es.ieslavereda.Formulario.vistas.VistaTabla;
 
 public class Controlador implements ActionListener {
 
 	private Formulario vista;
+	private VistaTabla vistaTabla;
 
 	private ArrayList<Persona> personas;
 	private int index;
@@ -50,7 +52,7 @@ public class Controlador implements ActionListener {
 		vista.getMntmOpen().addActionListener(this);
 		vista.getMntmSave().addActionListener(this);
 		vista.getMntmTabla().addActionListener(this);
-
+		
 		// Add ActionCommand
 		vista.getButtonPrevious().setActionCommand("Previous");
 		vista.getButtonNext().setActionCommand("Next");
@@ -59,6 +61,7 @@ public class Controlador implements ActionListener {
 		vista.getMntmOpen().setActionCommand("Open");
 		vista.getMntmSave().setActionCommand("Save");
 		vista.getMntmTabla().setActionCommand("Tabla");
+		
 
 	}
 
@@ -85,19 +88,46 @@ public class Controlador implements ActionListener {
 			open();
 		} else if (comando.equals("Tabla")) {
 			tabla();
+		} else if (comando.equals("Delete row")) {
+			deleteRow();
 		}
 		
 
 	}
 
+	private void deleteRow() {
+		
+		int fila = vistaTabla.getTable().getSelectedRow();
+		
+		if(fila ==-1) {
+			JOptionPane.showMessageDialog(vista, "Debes seleccionar una fila", "Error", JOptionPane.ERROR_MESSAGE);
+		}else {
+			int opcion = JOptionPane.showConfirmDialog(vista, "¿Esta seguro de eliminar la fila seleccionada?", "Confirmar", JOptionPane.YES_NO_OPTION);
+			
+			if(opcion == JOptionPane.YES_OPTION) {
+				
+				vistaTabla.getDtm().removeRow(fila);
+				personas.remove(fila);
+				index--;
+				actualizarFormulario();
+				
+			}
+		}
+		
+	}
+
 	private void tabla() {
 		
-		Tabla t = new Tabla();
-		t.setVisible(true);
+		vistaTabla = new VistaTabla();
+		
+		vistaTabla.getBtnDelete().addActionListener(this);
+		vistaTabla.getBtnDelete().setActionCommand("Delete row");
+		
+		vistaTabla.setVisible(true);
 		
 		int i=0;
 		for(Persona persona : personas) {
-			t.getDtm().addRow(new String[] {
+			vistaTabla.getDtm().addRow(new String[] {
 				String.valueOf(i),
 				persona.getDNI(),
 				persona.getName(),
@@ -106,20 +136,20 @@ public class Controlador implements ActionListener {
 			i++;
 		}
 		
-		Vector<String> fila;
-		for(Persona persona : personas) {
-			
-			fila = new Vector<String>();
-			
-			fila.add(String.valueOf(i));
-			fila.add(persona.getDNI());
-			fila.add(persona.getName());
-			fila.add(persona.getSurname());
-			
-			t.getDtm().addRow(fila);
-			
-			i++;
-		}
+//		Vector<String> fila;
+//		for(Persona persona : personas) {
+//			
+//			fila = new Vector<String>();
+//			
+//			fila.add(String.valueOf(i));
+//			fila.add(persona.getDNI());
+//			fila.add(persona.getName());
+//			fila.add(persona.getSurname());
+//			
+//			tabla.getDtm().addRow(fila);
+//			
+//			i++;
+//		}
 		
 	}
 

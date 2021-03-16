@@ -12,17 +12,20 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
 
-public class Tabla extends JFrame {
+public class VistaTabla extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
 	private DefaultTableModel dtm;
+	private JButton btnDelete;
 
 	/**
 	 * Create the frame.
 	 */
-	public Tabla() {
+	public VistaTabla() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -34,8 +37,8 @@ public class Tabla extends JFrame {
 		JPanel panelBotones = new JPanel();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(panelBotones, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
@@ -45,11 +48,15 @@ public class Tabla extends JFrame {
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panelTabla, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelBotones, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panelTabla, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+					.addGap(15)
+					.addComponent(panelBotones, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(11))
 		);
+		panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		
+		btnDelete = new JButton("Delete");
+		panelBotones.add(btnDelete);
 		panelTabla.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -78,6 +85,15 @@ public class Tabla extends JFrame {
 	public DefaultTableModel getDtm() {
 		return dtm;
 	}
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+	
 	
 }
 
