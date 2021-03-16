@@ -23,7 +23,7 @@ public class Tabla extends JFrame {
 	 * Create the frame.
 	 */
 	public Tabla() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,6 +56,7 @@ public class Tabla extends JFrame {
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 		
 		table = new JTable();
+
 		
 		dtm = new DefaultTableModel();
 		
@@ -64,7 +65,11 @@ public class Tabla extends JFrame {
 		dtm.addColumn("Nombre");
 		dtm.addColumn("Apellidos");		
 		
-		table.setModel(dtm);	
+		table.setModel(dtm);
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(10);
+		table.getColumnModel().getColumn(1).setPreferredWidth(20);
+		
 		
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);

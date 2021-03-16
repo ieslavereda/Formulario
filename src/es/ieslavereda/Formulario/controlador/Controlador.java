@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -93,6 +94,32 @@ public class Controlador implements ActionListener {
 		
 		Tabla t = new Tabla();
 		t.setVisible(true);
+		
+		int i=0;
+		for(Persona persona : personas) {
+			t.getDtm().addRow(new String[] {
+				String.valueOf(i),
+				persona.getDNI(),
+				persona.getName(),
+				persona.getSurname()
+			});
+			i++;
+		}
+		
+		Vector<String> fila;
+		for(Persona persona : personas) {
+			
+			fila = new Vector<String>();
+			
+			fila.add(String.valueOf(i));
+			fila.add(persona.getDNI());
+			fila.add(persona.getName());
+			fila.add(persona.getSurname());
+			
+			t.getDtm().addRow(fila);
+			
+			i++;
+		}
 		
 	}
 
